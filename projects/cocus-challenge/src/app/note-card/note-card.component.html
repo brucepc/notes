@@ -1,0 +1,42 @@
+<mat-card
+  [formGroup]="noteForm"
+  [ngClass]="state">
+  <input placeholder="Note title"
+         #titleRef
+         [tabindex]="tabindex + 1"
+         formControlName="title"
+         [readOnly]="isSaved"
+         (focusout)="onFocusOut()"
+         (focusin)="onFocusIn()"
+         class="bg-none mb-2 bg-gray-600 outline-0 w-full text-white font-medium">
+  <mat-card-content class="mb-0">
+    <textarea rows="6"
+              [tabindex]="tabindex + 2"
+              placeholder="Note details"
+              formControlName="details"
+              [readOnly]="isSaved"
+              (focusout)="onFocusOut()"
+              (focusin)="onFocusIn()"
+              class="resize-none bg-gray-600 outline-0 w-full text-white rounded-md"></textarea>
+  </mat-card-content>
+  <div class="flex">
+    <button mat-raised-button
+            class="uppercase"
+            [tabindex]="tabindex + 4"
+            [class.hidden]="!isDraft"
+            (click)="onSave(titleRef)"
+            [disabled]="noteForm.invalid"
+            color="primary">SAVE
+    </button>
+    <span class="flex-1"></span>
+    <button mat-icon-button
+            title="DISCARD"
+            [tabindex]="tabindex + 5"
+            [class.hidden]="isNew"
+            [disabled]="noteForm.invalid"
+            (click)="onDelete()"
+            color="warn">
+      <span class="material-icons">delete</span>
+    </button>
+  </div>
+</mat-card>

@@ -1,0 +1,25 @@
+
+:host .mat-card {
+  width: 350px;
+  overflow: hidden;
+  @apply bg-gray-600 transition-all;
+  @apply border-2 border-dotted;
+
+  &.new {
+    height: 52px;
+  }
+
+  &.draft {
+    height: 232px;
+  }
+
+  &.saved {
+    @apply border-0;
+  }
+
+  textarea {
+    @apply resize-none bg-gray-600 outline-0
+    w-full text-white rounded-md scrollbar
+    scrollbar-thumb-amber-300 scrollbar-track-gray-300;
+  }
+}

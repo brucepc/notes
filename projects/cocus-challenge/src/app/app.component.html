@@ -1,0 +1,14 @@
+<div class="h-full flex flex-col bg-gray-700">
+  <mat-toolbar>
+    <mat-toolbar-row class="flex space-between bg-gray-800 text-orange-400">
+      <div class="toolbar-title">My Notes</div>
+      <div class="flex flex-1"></div>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <main class="flex flex-wrap justify-start p-2 gap-2 w-full h-max-full overflow-auto items-start">
+    <ng-container *ngFor="let note of notes; let i = index">
+      <app-note-card [tabindex]="i+10" [note]="note"></app-note-card>
+    </ng-container>
+    <app-note-card [tabindex]="notes.length+15"></app-note-card>
+  </main>
+</div>
