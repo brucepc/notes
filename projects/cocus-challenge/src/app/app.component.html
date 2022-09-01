@@ -5,10 +5,11 @@
       <div class="flex flex-1"></div>
     </mat-toolbar-row>
   </mat-toolbar>
-  <main class="flex flex-wrap justify-start p-2 gap-2 w-full h-max-full overflow-auto items-start">
+  <main
+    class="flex flex-wrap print:block justify-start p-2 gap-2 w-full h-max-full overflow-auto items-start">
     <ng-container *ngFor="let note of notes; let i = index">
       <app-note-card [tabindex]="i+10" [note]="note"></app-note-card>
     </ng-container>
-    <app-note-card [tabindex]="notes.length+15"></app-note-card>
+    <app-note-card class="print:hidden" [tabindex]="notes.length+15"></app-note-card>
   </main>
 </div>

@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, HostListener, Input} from '@angular/core';
 import {NoteCardStateEnum} from "./note-card-state-enum";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Note, NoteDraft} from "../notes";
-import {NotesService} from "../notes.service";
+import {Note, NoteDraft} from "../dtos/notes";
+import {NotesService} from "../common/notes.service";
 
 @Component({
   selector: 'app-note-card',
@@ -21,7 +21,6 @@ export class NoteCardComponent {
   set note(value: Note | null) {
     this._note = value;
     if (value) {
-      this.state = NoteCardStateEnum.SAVED;
       this.noteForm.patchValue({
         title: value.title,
         details: value.details
@@ -65,7 +64,7 @@ export class NoteCardComponent {
   }
 
   onFocusOut() {
-    if (!!this.note) {
+    if (!!this.note && !this.noteForm.touched) {
       this.state = NoteCardStateEnum.SAVED;
     } else if (!this.noteForm.touched) {
       this.state = NoteCardStateEnum.NEW;
@@ -83,8 +82,8 @@ export class NoteCardComponent {
     const noteValue: NoteDraft = this.noteForm.value;
     if (!this.note && this.noteForm.valid) {
       this.notesService.addNote(noteValue);
-      inputRef.focus();
       this.cleanCard();
+      inputRef.focus();
     } else if (!!this.note && this.noteForm.valid) {
       this.notesService.save(this.note.id, noteValue);
       this.cleanCard();
@@ -92,13 +91,8 @@ export class NoteCardComponent {
     this.cdr.detectChanges();
   }
 
-  isEmpty(): boolean {
-    const noteValue: NoteDraft = this.noteForm.value;
-    return noteValue.title !== '' && noteValue.details !== '';
-  }
-
   onDelete() {
-    if (!!this.note) {
+    if (!!this.note && this.state !== NoteCardStateEnum.DRAFT) {
       this.notesService.deleteNote(this.note);
     } else {
       this.cleanCard();

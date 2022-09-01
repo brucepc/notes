@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Notes} from "./notes";
-import {NotesService} from "./notes.service";
+import {Notes} from "./dtos/notes";
+import {NotesService} from "./common/notes.service";
 
 @Component({
   selector: 'app-root',
@@ -16,9 +16,5 @@ export class AppComponent {
   constructor(
     private readonly notesService: NotesService
   ) {
-    this.notesService.addNote({
-      title: 'Title',
-      details: 'Details 1'
-    });
   }
 }

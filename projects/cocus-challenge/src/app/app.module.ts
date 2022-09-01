@@ -9,8 +9,12 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatGridListModule} from "@angular/material/grid-list";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCardModule} from "@angular/material/card";
-import { NoteCardComponent } from './note-card/note-card.component';
+import {NoteCardComponent} from './note-card/note-card.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import {ENCRYPT_KEY} from "./common/tokens";
+import {NotesService} from "./common/notes.service";
+import {StorageService} from "./common/storage.service";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -26,9 +30,17 @@ import {ReactiveFormsModule} from "@angular/forms";
     MatGridListModule,
     MatToolbarModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatInputModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: ENCRYPT_KEY,
+      useValue: 'my-notes-custom-key'
+    },
+    StorageService,
+    NotesService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
