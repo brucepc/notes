@@ -10,6 +10,10 @@ describe('NotesServiceService', () => {
   let storage: StorageService;
   const note = {id: v4(), title: 'T1', details: 'D'};
 
+  beforeAll(() => {
+    localStorage.clear();
+  });
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [

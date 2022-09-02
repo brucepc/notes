@@ -4,16 +4,22 @@ import {StorageService} from './storage.service';
 import {ENCRYPT_KEY} from "./tokens";
 
 describe('StorageService', () => {
-  let service: StorageService;
 
-  beforeEach(() => {
+  it('should be created StorageService with Encrypt key', () => {
     TestBed.configureTestingModule({
       providers: [{provide: ENCRYPT_KEY, useValue: 'unit-test-key'}]
     });
-    service = TestBed.inject(StorageService);
-  });
+    const service = TestBed.inject(StorageService);
 
-  it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should be created StorageService without Encrypt key', () => {
+    TestBed.configureTestingModule({});
+    const service = TestBed.inject(StorageService);
+
+    expect(service).toBeTruthy();
+  });
+
+
 });

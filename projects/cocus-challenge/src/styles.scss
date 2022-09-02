@@ -45,3 +45,7 @@ body {
 
 @import 'tailwindcss/base';
 @import 'tailwindcss/utilities';
+
+::placeholder {
+  color: currentColor !important;
+}

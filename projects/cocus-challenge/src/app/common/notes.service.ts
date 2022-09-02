@@ -39,11 +39,22 @@ export class NotesService {
     if (noteFound) {
       noteFound.title = note.title;
       noteFound.details = note.details;
+      noteFound.tags = note.tags;
     }
     this.updateStorage();
   }
 
   private updateStorage() {
     this.storage.setItem('notes', this.notes);
+  }
+
+  filterNotesByTerm(term: any): Notes {
+    const termLowerCase = (term || '').toLowerCase();
+    return this.notes
+      .filter(note =>
+        note.tags?.join(',').toLowerCase().includes(termLowerCase) ||
+        note.title.toLowerCase().includes(termLowerCase) ||
+        note.details.toLowerCase().includes(termLowerCase)
+      );
   }
 }

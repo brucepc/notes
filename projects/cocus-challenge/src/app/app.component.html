@@ -1,8 +1,17 @@
 <div class="h-full flex flex-col bg-gray-700">
   <mat-toolbar>
-    <mat-toolbar-row class="flex space-between bg-gray-800 text-orange-400">
-      <div class="toolbar-title">My Notes</div>
-      <div class="flex flex-1"></div>
+    <mat-toolbar-row class="flex items-center space-between bg-gray-800">
+      <div class="toolbar-title text-orange-400">My Notes</div>
+      <mat-form-field class="mx-3 border-orange-400 w-full h-[45px] text-[12px]"
+                      [appearance]="'outline'">
+        <input matInput
+               placeholder="Search..."
+               class="text-[14px] text-white"
+               tabindex="0"
+               autocomplete="false"
+               [formControl]="searchInputControl">
+        <mat-icon matSuffix class="text-orange-400">search</mat-icon>
+      </mat-form-field>
     </mat-toolbar-row>
   </mat-toolbar>
   <main

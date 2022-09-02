@@ -1,33 +1,46 @@
 <mat-card class="print:w-full"
           [formGroup]="noteForm"
           [ngClass]="state">
-  <input placeholder="Note title"
-         #titleRef
-         [tabindex]="tabindex + 1"
-         matNativeControl
+  <input #titleRef matInput
+         class="bg-none mb-2 bg-gray-600 outline-0 w-full text-white font-medium"
+         placeholder="Note title"
          formControlName="title"
-         [readOnly]="isSaved"
-         (focusout)="onFocusOut()"
-         (focusin)="onFocusIn()"
-         class="bg-none mb-2 bg-gray-600 outline-0 w-full text-white font-medium">
+         [tabindex]="tabindex + 1">
   <ng-container *ngIf="isDraft || isSaved">
     <mat-card-content class="mb-0">
       <textarea rows="5"
                 [tabindex]="tabindex + 2"
                 placeholder="Note details"
                 formControlName="details"
-                [readOnly]="isSaved"
-                (focusout)="onFocusOut()"
-                (focusin)="onFocusIn()"
                 class="resize-none bg-gray-600 outline-0 w-full text-white rounded-md"></textarea>
     </mat-card-content>
-    <div class="flex">
-      <input placeholder="@tags"
-             [tabindex]="tabindex + 3"
-             [readOnly]="isSaved"
-             (focusout)="onFocusOut()"
-             (focusin)="onFocusIn()"
-             class="bg-none mb-2 bg-gray-600 w-3/12 outline-0 text-white">
+    <div class="flex items-center"
+         [style.height.px]="40">
+      <mat-chip-list #chipList
+                     class="flex m-1 flex-nowrap text-white"
+                     aria-label="Tags selection">
+        <div class="flex w-full flex-nowrap">
+          <mat-chip *ngFor="let tag of tags | slice:0:1"
+                    [matBadge]="tags.length"
+                    [matBadgeHidden]="tags.length<=1"
+                    class="w-6/12 mr-2.5 whitespace-nowrap text-ellipsis"
+                    (removed)="removeTag(tag)">
+            <div class="overflow-hidden text-ellipsis w-10/12">{{tag}}</div>
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input class="bg-none w-6/12 mb-2 bg-gray-600 outline-0 font-medium"
+                 placeholder="@tags"
+                 formControlName="tags"
+                 matInput
+                 [tabindex]="tabindex + 3"
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="addTag($event)">
+        </div>
+      </mat-chip-list>
     </div>
     <div class="flex print:hidden">
       <button mat-raised-button

@@ -3,6 +3,8 @@ import {NoteCardStateEnum} from "./note-card-state-enum";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Note, NoteDraft} from "../dtos/notes";
 import {NotesService} from "../common/notes.service";
+import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import {MatChipInputEvent} from "@angular/material/chips";
 
 @Component({
   selector: 'app-note-card',
@@ -10,11 +12,20 @@ import {NotesService} from "../common/notes.service";
   styleUrls: ['./note-card.component.scss']
 })
 export class NoteCardComponent {
-  state: NoteCardStateEnum = NoteCardStateEnum.NEW;
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  addOnBlur = true;
+  tags: string[] = [];
   noteForm!: FormGroup;
 
   @Input()
   tabindex: number = 1;
+
+  get state(): NoteCardStateEnum {
+    if (this.noteForm.dirty) {
+      return NoteCardStateEnum.DRAFT;
+    }
+    return !this.note ? NoteCardStateEnum.NEW : NoteCardStateEnum.SAVED;
+  }
 
   private _note: Note | null = null;
   @Input()
@@ -25,7 +36,7 @@ export class NoteCardComponent {
         title: value.title,
         details: value.details
       });
-      this.state = NoteCardStateEnum.SAVED;
+      this.tags = value.tags || [];
     }
     this.cdr.detectChanges();
   }
@@ -59,30 +70,13 @@ export class NoteCardComponent {
     this.noteForm = this.buildForm();
   }
 
-  onFocusIn() {
-    this.state = NoteCardStateEnum.DRAFT;
-  }
-
-  onFocusOut() {
-    if (!!this.note && !this.noteForm.touched) {
-      this.state = NoteCardStateEnum.SAVED;
-    } else if (!this.noteForm.touched) {
-      this.state = NoteCardStateEnum.NEW;
-    }
-  }
-
-  private buildForm(): FormGroup {
-    return this.fb.group({
-      title: [this.note?.title, Validators.required],
-      details: [this.note?.details]
-    });
-  }
-
   onSave(inputRef: HTMLInputElement) {
     const noteValue: NoteDraft = this.noteForm.value;
+    noteValue.tags = [...this.tags];
     if (!this.note && this.noteForm.valid) {
       this.notesService.addNote(noteValue);
       this.cleanCard();
+      this.tags = [];
       inputRef.focus();
     } else if (!!this.note && this.noteForm.valid) {
       this.notesService.save(this.note.id, noteValue);
@@ -99,13 +93,41 @@ export class NoteCardComponent {
     }
   }
 
+  removeTag(tag: string): void {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+  }
+
+  addTag(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    if (value) {
+      this.tags.push(value);
+    }
+
+    event.chipInput!.clear();
+  }
+
+  private buildForm(): FormGroup {
+    return this.fb.group({
+      title: [this.note?.title, Validators.required],
+      details: [this.note?.details],
+      tags: []
+    });
+  }
+
   private cleanCard() {
-    if (!!this.note) {
-      this.noteForm.patchValue({title: this.note.title, details: this.note.details});
-      this.state = NoteCardStateEnum.SAVED;
+    this.noteForm.reset({
+      title: this.note?.title,
+      details: this.note?.details
+    });
+    if (this.note && this.note.tags) {
+      this.tags = [...this.note.tags];
     } else {
-      this.noteForm.patchValue({title: '', details: ''});
-      this.state = NoteCardStateEnum.NEW;
+      this.tags = [];
     }
     this.cdr.detectChanges();
   }

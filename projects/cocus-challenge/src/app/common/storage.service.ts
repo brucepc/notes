@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, Optional} from '@angular/core';
 import {EncryptStorage} from "encrypt-storage";
 import {ENCRYPT_KEY} from "./tokens";
 
@@ -8,7 +8,7 @@ import {ENCRYPT_KEY} from "./tokens";
 })
 export class StorageService extends EncryptStorage {
   constructor(
-    @Inject(ENCRYPT_KEY)
+    @Inject(ENCRYPT_KEY) @Optional()
       encryptKey: string
   ) {
     super(encryptKey || 'default-key');
