@@ -14,9 +14,7 @@
   }
 
   textarea {
-    @apply resize-none bg-gray-600 outline-0
-    w-full text-white rounded-md scrollbar
-    scrollbar-thumb-amber-300 scrollbar-track-gray-300;
+    @apply resize-none bg-gray-600 outline-0 w-full text-white rounded-md scrollbar scrollbar-thumb-amber-300 scrollbar-track-gray-300;
   }
 
 }

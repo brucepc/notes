@@ -25,19 +25,25 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/cocus-challenge/src/favicon.ico",
-              "projects/cocus-challenge/src/assets"
+              "projects/cocus-challenge/src/assets",
+              "projects/cocus-challenge/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/cocus-challenge/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "encrypt-storage"
+            ],
+            "serviceWorker": true,
+            "ngswConfigPath": "projects/cocus-challenge/ngsw-config.json"
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
+                  "maximumWarning": "700kb",
                   "maximumError": "1mb"
                 },
                 {
@@ -93,7 +99,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/cocus-challenge/src/favicon.ico",
-              "projects/cocus-challenge/src/assets"
+              "projects/cocus-challenge/src/assets",
+              "projects/cocus-challenge/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/cocus-challenge/src/styles.scss"
