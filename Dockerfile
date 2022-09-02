@@ -9,4 +9,4 @@ RUN yarn build
 
 FROM nginx:latest
 WORKDIR /usr/share/nginx/html
-COPY --from=node /app/dist/cocus-challenge ./
+COPY --from=node /app/dist/my-notes ./
